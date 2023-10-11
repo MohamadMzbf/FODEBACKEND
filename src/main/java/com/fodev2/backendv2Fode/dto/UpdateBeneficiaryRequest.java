@@ -15,8 +15,8 @@ import java.util.Date;
 public class UpdateBeneficiaryRequest {
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateBirth;
-    private String city;
-    private String country;
+    private Integer city;
+    private Integer country;
     private String email;
     private String phoneNumberOne;
     private String phoneNumberTwo;
@@ -30,11 +30,11 @@ public class UpdateBeneficiaryRequest {
         this.dateBirth = dateBirth;
     }
 
-    public String getCity() {
+    public Integer getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(Integer city) {
         this.city = city;
     }
 
