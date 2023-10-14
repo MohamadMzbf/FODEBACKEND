@@ -1,5 +1,6 @@
 package com.fodev2.backendv2Fode.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +29,7 @@ public class Country {
 //    @OneToOne(mappedBy = "Country_Id")
 //    private Beneficiary beneficiary;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "country")
     private List<Beneficiary> beneficiaries;
 }

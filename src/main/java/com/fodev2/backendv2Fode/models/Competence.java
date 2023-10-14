@@ -1,26 +1,23 @@
 package com.fodev2.backendv2Fode.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class City {
+public class Competence {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id ;
-//    private Integer city_id;
-@JsonIgnore
-@OneToMany(mappedBy = "city")
-    private List<Beneficiary> beneficiaries;
-//    private String city_name;
+    @Column( nullable = false)
+    private Integer Competence_id;
+    private String competence;
+    @ManyToOne
+    @JoinColumn(name = "applicant_iuf")
+    private Applicant applicant;
 }

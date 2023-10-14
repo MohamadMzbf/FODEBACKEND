@@ -38,4 +38,5 @@ public class BeneficiaryController {
     {
         return beneficiaryService.getAllBeneficiary();
     }
+
 }

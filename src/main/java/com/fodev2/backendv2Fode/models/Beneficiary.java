@@ -1,6 +1,7 @@
 package com.fodev2.backendv2Fode.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,15 +11,17 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class Beneficiary {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String IUF;
+
     private String firstname;
     private String lastname;
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -47,10 +50,13 @@ public class Beneficiary {
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
-}
+
+//    @OneToOne(mappedBy = "IUF")
+//    private Applicant applicant;
 
 
-//    public Beneficiary(Long id, Integer profile, String IUF, String firstname, String lastname, Date dateBirth, Integer gender, Integer city, Integer country, String email, String phoneNumberOne, String phoneNumberTwo) {
+//
+//    public Beneficiary(Long id, Profile profile, String IUF, String firstname, String lastname, Date dateBirth, Gender gender, City city, Country country, String email, String phoneNumberOne, String phoneNumberTwo) {
 //        this.id = id;
 //        this.profile = profile;
 //        this.IUF = IUF;
@@ -67,9 +73,7 @@ public class Beneficiary {
 //
 //    public Beneficiary() {
 //    }
-
-    //===============================
-
+//
 //
 //    public Long getId() {
 //        return id;
@@ -111,27 +115,27 @@ public class Beneficiary {
 //        this.dateBirth = dateBirth;
 //    }
 //
-//    public Integer getGender() {
+//    public Gender getGender() {
 //        return gender;
 //    }
 //
-//    public void setGender(Integer gender) {
+//    public void setGender(Gender gender) {
 //        this.gender = gender;
 //    }
 //
-//    public Integer getCity() {
+//    public City getCity() {
 //        return city;
 //    }
 //
-//    public void setCity(Integer city) {
+//    public void setCity(City city) {
 //        this.city = city;
 //    }
 //
-//    public Integer getCountry() {
+//    public Country getCountry() {
 //        return country;
 //    }
 //
-//    public void setCountry(Integer country) {
+//    public void setCountry(Country country) {
 //        this.country = country;
 //    }
 //
@@ -159,11 +163,11 @@ public class Beneficiary {
 //        this.phoneNumberTwo = phoneNumberTwo;
 //    }
 //
-//    public Integer getProfile() {
+//    public Profile getProfile() {
 //        return profile;
 //    }
 //
-//    public void setProfile(Integer profile) {
+//    public void setProfile(Profile profile) {
 //        this.profile = profile;
 //    }
-//}
+}

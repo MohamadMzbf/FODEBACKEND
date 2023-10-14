@@ -2,9 +2,8 @@ package com.fodev2.backendv2Fode.services;
 
 import com.fodev2.backendv2Fode.dto.BeneficiaryRequest;
 import com.fodev2.backendv2Fode.dto.UpdateBeneficiaryRequest;
-import com.fodev2.backendv2Fode.models.Beneficiary;
-import com.fodev2.backendv2Fode.models.Gender;
-import com.fodev2.backendv2Fode.models.Profile;
+import com.fodev2.backendv2Fode.models.*;
+import com.fodev2.backendv2Fode.repositories.ApplicantRepository;
 import com.fodev2.backendv2Fode.repositories.BeneficiaryRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +17,7 @@ import com.fodev2.backendv2Fode.models.Profile;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,14 +25,10 @@ import java.util.List;
 @Builder
 public class BeneficiaryService {
     private final BeneficiaryRepository beneficiaryRepository;
+    private final ApplicantRepository applicantRepository;
 
     private final JdbcTemplate jdbcTemplate; // injecter...  nous permet d'utiliser le fichier sql
 
-    //    public String IUF_generator(Long profile, Long id, Long gender) {
-
-    //###########################################################
-
-// ...
 
     public String IUF_generator(int profile, Long OrderNumber, int gender) {
         Calendar ok = Calendar.getInstance();
@@ -99,29 +95,33 @@ public class BeneficiaryService {
         String ordreString = callRemoteFunction(); // Récupérer la chaîne de caractères de NumeroOrdre()
         Long ordreLong = Long.parseLong(ordreString); // Convertir la chaîne en Long
 
-        Profile profile = beneficiary.getProfile();
-        Gender gender = beneficiary.getGender();
+        Profile profile = beneficiary.getProfile();//on a cree une methode ToString dans Profile pour pour recuperer le profile en int au lieu de o'objet
+        Gender gender = beneficiary.getGender();//on a cree une methode ToString dans Gender pour pour recuperer le gender en int au lieu de o'objet
 
 //        String x = IUF_generator(beneficiary.getProfile(),ordreLong, beneficiary.getGender());
         String x = IUF_generator(Integer.parseInt(profile.toString()),ordreLong, Integer.parseInt(gender.toString()));//Baidy
 //        String x = IUF_generator(Integer.parseInt(profile.toString()),ordreLong, beneficiary.getGender());
 
-//        Integer profileInteger = profile.ordinal();;
-//        String x = IUF_generator(profileInteger, ordreLong, beneficiary.getGender());
-// Integer.getInteger(Profile.toString());
-// Integer prfilInt = Integer.parseInt(profile.toString());
 
 
+        // Créez un nouvel objet Applicant
+        Applicant applicant = new Applicant();
 
+        //enregistrer l'iuf generer dans iuf beneficiary
         beneficiary.setIUF(x);
         beneficiaryRepository.save(beneficiary);
         log.info("NumeroOdre est {} :" +ordreString);
+
+        //enregistrer le meme l'iuf dans applicant
+        applicant.setIUF(x);
+        applicantRepository.save(applicant);
     }
 
     public List<BeneficiaryRequest> getAllBeneficiary()
     {
         List<Beneficiary> beneficiaries = beneficiaryRepository.findAll();
-        return beneficiaries.stream().map(this::mapToBeneficiaryRequest).toList();
+//        return beneficiaries.stream().map(this::mapToBeneficiaryRequest).toList();
+        return beneficiaries.stream().map(this::mapToBeneficiaryRequest).collect(Collectors.toList());
     }
 
     public void updateBeneficiary(int beneficiaryId, UpdateBeneficiaryRequest updatedBeneficiaryRequest)
