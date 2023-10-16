@@ -1,10 +1,14 @@
 package com.fodev2.backendv2Fode.services;
 
 import com.fodev2.backendv2Fode.dto.BeneficiaryRequest;
+import com.fodev2.backendv2Fode.dto.GenderRequest;
+import com.fodev2.backendv2Fode.dto.ProfileRequest;
 import com.fodev2.backendv2Fode.dto.UpdateBeneficiaryRequest;
 import com.fodev2.backendv2Fode.models.*;
 import com.fodev2.backendv2Fode.repositories.ApplicantRepository;
 import com.fodev2.backendv2Fode.repositories.BeneficiaryRepository;
+import com.fodev2.backendv2Fode.repositories.GenderRepository;
+import com.fodev2.backendv2Fode.repositories.ProfileRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +30,8 @@ import java.util.stream.Collectors;
 public class BeneficiaryService {
     private final BeneficiaryRepository beneficiaryRepository;
     private final ApplicantRepository applicantRepository;
+    private final GenderRepository genderRepository;
+    private final ProfileRepository profileRepository;
 
     private final JdbcTemplate jdbcTemplate; // injecter...  nous permet d'utiliser le fichier sql
 
@@ -136,6 +142,32 @@ public class BeneficiaryService {
         beneficiaryRepository.save(existingBeneficiary);
     }
 
+    public List<ProfileRequest> getAllProfile(){
+
+        List<Profile> profiles = profileRepository.findAll();
+        return profiles.stream().map(this::mapToProfileRequest).toList();
+    }
+
+    public List<GenderRequest> getAllGender(){
+        List<Gender> genders = genderRepository.findAll();
+
+        return genders.stream().map(this::mapToGnederRequest).toList();
+    }
+
+    //Mapping d'objet
+
+    private ProfileRequest mapToProfileRequest(Profile profile){
+        return ProfileRequest.builder()
+                .id(profile.getId())
+                .build();
+    }
+
+    private GenderRequest mapToGnederRequest(Gender gender){
+        return GenderRequest.builder()
+                .id(gender.getId())
+                .build();
+    }
+
     private BeneficiaryRequest mapToBeneficiaryRequest(Beneficiary beneficiary)
     {
         return BeneficiaryRequest.builder()
@@ -152,4 +184,5 @@ public class BeneficiaryService {
                 .phoneNumberTwo(beneficiary.getPhoneNumberTwo())
                 .build();
     }
+
 }
