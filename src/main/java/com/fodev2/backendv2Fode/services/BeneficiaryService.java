@@ -21,6 +21,7 @@ import com.fodev2.backendv2Fode.models.Profile;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -130,16 +131,25 @@ public class BeneficiaryService {
         return beneficiaries.stream().map(this::mapToBeneficiaryRequest).collect(Collectors.toList());
     }
 
-    public void updateBeneficiary(int beneficiaryId, UpdateBeneficiaryRequest updatedBeneficiaryRequest)
+    public void updateBeneficiary(String IUF, UpdateBeneficiaryRequest updatedBeneficiaryRequest)
     {
-        Beneficiary existingBeneficiary = beneficiaryRepository
-                .findById((long) beneficiaryId)
-                .orElseThrow(() -> new NotFoundException("Beneficiary not found with ID: " + beneficiaryId));
+        Optional<Beneficiary> optionalBeneficiary = Optional.ofNullable(beneficiaryRepository.findByIUF(IUF));
+        if(optionalBeneficiary.isPresent()){
+            Beneficiary beneficiary = optionalBeneficiary.get();
 
-        // Copy updated fields from updatedBeneficiaryRequest to existingBeneficiary
-        BeanUtils.copyProperties(updatedBeneficiaryRequest, existingBeneficiary);
+            // Mettez à jour les champs de l'entité Beneficiary à partir du DTO
+            beneficiary.setFirstname(beneficiary.getFirstname());
+            beneficiary.setLastname(beneficiary.getLastname());
+            beneficiary.setDateBirth(updatedBeneficiaryRequest.getDateBirth());
+            beneficiary.setEmail(updatedBeneficiaryRequest.getEmail());
+            beneficiary.setPhoneNumberOne(updatedBeneficiaryRequest.getPhoneNumberOne());
+            beneficiary.setPhoneNumberTwo(updatedBeneficiaryRequest.getPhoneNumberTwo());
+            // Enregistrez la mise à jour dans le référentiel Beneficiary
+            beneficiaryRepository.save(beneficiary);
+        }else {
+            throw new NotFoundException("Beneficiary not found with IUF: " + IUF);
+        }
 
-        beneficiaryRepository.save(existingBeneficiary);
     }
 
     public List<ProfileRequest> getAllProfile(){
@@ -171,7 +181,7 @@ public class BeneficiaryService {
     private BeneficiaryRequest mapToBeneficiaryRequest(Beneficiary beneficiary)
     {
         return BeneficiaryRequest.builder()
-                .id(beneficiary.getId())
+//                .id(beneficiary.getId())
                 .IUF(beneficiary.getIUF())
                 .firstname(beneficiary.getFirstname())
                 .lastname(beneficiary.getLastname())

@@ -17,11 +17,11 @@ import java.util.Date;
 @Data
 
 public class Beneficiary {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long id;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private String IUF;
-
     private String firstname;
     private String lastname;
     @JsonFormat(pattern = "yyyy-MM-dd")

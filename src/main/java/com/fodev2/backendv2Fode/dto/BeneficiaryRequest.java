@@ -19,24 +19,10 @@ import java.util.Date;
 @Builder
 @Data
 public class BeneficiaryRequest {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    private Long id;
-//    private Profile profile;
-//    private String IUF;
-//    private String firstname;
-//    private String lastname;
-//    @JsonFormat(pattern="yyyy-MM-dd")
-//    private Date dateBirth;
-//    private Gender gender;
-//    private City city;
-//    private Country country;
-//    private String email;
-//    private String phoneNumberOne;
-//    private String phoneNumberTwo;
 
-    private Long id;
-    private Profile profile;
+
+//    private Long id;
+    @Id
     private String IUF;
     private String firstname;
     private String lastname;
@@ -48,6 +34,7 @@ public class BeneficiaryRequest {
     private String email;
     private String phoneNumberOne;
     private String phoneNumberTwo;
+    private Profile profile;
 
 
 }

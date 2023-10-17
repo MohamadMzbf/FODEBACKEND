@@ -1,23 +1,18 @@
-package com.fodev2.backendv2Fode.models;
+package com.fodev2.backendv2Fode.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fodev2.backendv2Fode.models.Applicant;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
-@Builder
-@Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Education {
+@Builder
+@Data
+public class EducationRequest {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column( nullable = false)
     private Integer Education_id;
     @Column(length = 45)
     private String title;
@@ -27,7 +22,6 @@ public class Education {
     private String yearGraduation;
     @Column(length = 45)
     private String institution;
-//    @Column(name = "IUF")
     @ManyToOne
-    private Applicant IUF;
+    private Applicant Applicant;
 }

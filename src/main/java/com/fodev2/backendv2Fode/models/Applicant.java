@@ -18,11 +18,10 @@ public class Applicant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String IUF;
-//    private String IUF;
 
 //    @OneToMany(mappedBy = "applicant")
 //    private Collection<Profile> profile;
-    @OneToMany(mappedBy = "applicant")
+    @OneToMany(mappedBy = "IUF")
     private Collection<Education> education;
     @OneToMany(mappedBy = "applicant")
     private Collection<Experience> experience;

@@ -6,6 +6,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BeneficiaryRepository extends JpaRepository<Beneficiary,Long> {
-    Beneficiary findByIUF(@Param("IUF") Beneficiary iuf);
+public interface BeneficiaryRepository extends JpaRepository<Beneficiary,String> {
+    Beneficiary findByIUF(@Param("IUF") String iuf);
 }

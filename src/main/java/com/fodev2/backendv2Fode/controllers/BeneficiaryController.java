@@ -26,11 +26,10 @@ public class BeneficiaryController {
     }
 
     @PutMapping("updateBeneficiary/{beneficiaryId}")
-    public ResponseEntity<String> updateBeneficiary(
-            @PathVariable Integer beneficiaryId,
+    public ResponseEntity<String> updateBeneficiary(@PathVariable String beneficiaryIUF,
             @RequestBody UpdateBeneficiaryRequest updateBeneficiaryRequest)
     {
-        beneficiaryService.updateBeneficiary(beneficiaryId, updateBeneficiaryRequest);
+        beneficiaryService.updateBeneficiary(beneficiaryIUF, updateBeneficiaryRequest);
         return new ResponseEntity<>("Beneficiary updated successfully", HttpStatus.OK);
     }
 
