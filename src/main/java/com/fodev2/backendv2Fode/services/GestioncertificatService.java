@@ -2,6 +2,7 @@ package com.fodev2.backendv2Fode.services;
 
 import com.fodev2.backendv2Fode.MoodleConfig;
 import com.fodev2.backendv2Fode.dto.CertificatResponse;
+import com.fodev2.backendv2Fode.dto.CoursResponse;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,6 @@ import java.util.List;
 @Slf4j
 @Builder
 public class GestioncertificatService {
-
 
     private final MoodleConfig moodleConfig = new MoodleConfig();
 
