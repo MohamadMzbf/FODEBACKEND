@@ -2,6 +2,7 @@ package com.fodev2.backendv2Fode.controllers;
 
 import com.fodev2.backendv2Fode.dto.CertificatResponse;
 import com.fodev2.backendv2Fode.dto.EducationRequest;
+import com.fodev2.backendv2Fode.dto.StudentResponse;
 import com.fodev2.backendv2Fode.services.GestionApprenantsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class GestionApprenentController {
 
     @GetMapping(path = "/user")
     @ResponseStatus(HttpStatus.OK)
-    public List<Object[]> list(){
-        return gestionApprenantsService.getUser();
+    public List<StudentResponse[]> list(){
+        return gestionApprenantsService.getStudents();
     }
 }

@@ -29,12 +29,12 @@ public class GestionCoursService {
 
 
     ResponseEntity<CoursResponse[]> coursResponseResponseEntity = restTemplate.getForEntity(moodleConfig.serveurUrl + "?wstoken={token}&wsfunction={function}&moodlewsrestformat=json", CoursResponse[].class, moodleConfig.wstoken, wsfunction);
-        CoursResponse[] coursResponses = coursResponseResponseEntity.getBody();
+    CoursResponse[] coursResponses = coursResponseResponseEntity.getBody();
 
     return List.of(coursResponses);
 }
 
-    public  List<Integer>recupID(CoursResponse[] coursResponses){
+    public  List<Integer>recupID(List<CoursResponse> coursResponses){
         List<Integer>courseID = new ArrayList<>();
         for(CoursResponse course : coursResponses){
             courseID.add(course.getId());
