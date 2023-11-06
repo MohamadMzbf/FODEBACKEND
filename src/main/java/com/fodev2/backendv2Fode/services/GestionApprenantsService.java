@@ -6,9 +6,9 @@ import com.fodev2.backendv2Fode.dto.StudentResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ForkJoinPool;
+import java.util.stream.Collectors;
 
 public class GestionApprenantsService {
 
@@ -18,7 +18,7 @@ public class GestionApprenantsService {
 
 
 
-    public List<StudentResponse[]> getUsers() {
+    public List<StudentResponse> getUsers() {
         List<CoursResponse> coursResponses = gestionCoursService.getAllCourses();
         List<StudentResponse[]> students = new ArrayList<>();
 
@@ -39,6 +39,7 @@ public class GestionApprenantsService {
 
             System.out.println(coursResponse.getId());
 
+
             try {
                 ResponseEntity<StudentResponse[]> studentsResponseEntity = restTemplate.getForEntity(
                         requestTemplate,
@@ -54,10 +55,10 @@ public class GestionApprenantsService {
             }
         }
 
-        return students;
+        return cleaningList(students);
     }
 
-    public List<StudentResponse[]> getStudents(){
+    public List<StudentResponse> getStudents(){
 
         List<StudentResponse[]> studentResponses = new ArrayList<>();
         List<CoursResponse> coursResponses = gestionCoursService.getAllCourses();
@@ -82,7 +83,7 @@ public class GestionApprenantsService {
         ForkJoinPool forkJoinPool = new ForkJoinPool(50);
 
         try {
-            forkJoinPool.submit(() -> coursResponses.parallelStream().filter(coursResponse -> !ignores.contains(coursResponse.getId())).forEach(
+            forkJoinPool.submit(() -> coursResponses.parallelStream().filter(coursResponse -> ignores.contains(coursResponse.getId())).forEach(
                     coursResponse -> {
                         ResponseEntity<StudentResponse[]> studentsResponseEntity = restTemplate.getForEntity(
                                 requestTemplate,
@@ -93,7 +94,7 @@ public class GestionApprenantsService {
                         );
                         synchronized (studentResponses){
                             studentResponses.add(studentsResponseEntity.getBody());
-                            System.out.println(coursResponse.getId());
+
                         }
                     }
             ) ).get();
@@ -103,6 +104,65 @@ public class GestionApprenantsService {
 
         }
 
-        return studentResponses;
+
+        return cleaningList(studentResponses);
     }
+
+    public List<StudentResponse> cleaningList(List<StudentResponse[]> studentResponses){
+
+        final List<StudentResponse> cleanList = new ArrayList<>();
+
+        for(StudentResponse[] studentResponses1 : studentResponses){
+            Arrays.stream(studentResponses1).toList().forEach(studentResponse -> {
+                        System.out.println(studentResponse.getId());
+
+                        if (cleanList.isEmpty()) {
+                            cleanList.add(studentResponse);
+                        }else{
+                            if(cleanList.stream().noneMatch(p -> p.getId().equals(studentResponse.getId()))){
+                                cleanList.add(studentResponse);
+                            }
+                        }
+
+
+                    });
+        }
+
+//       studentResponses.forEach(studentResponses1 -> {
+//
+//         Arrays.stream(studentResponses1).toList().forEach(studentResponse -> {
+//             System.out.println(studentResponse.getId());
+//             if (cleanList.isEmpty())  {
+//                 cleanList.add(studentResponse);
+//             }else {
+//                 for (StudentResponse clean : cleanList) {
+//                     if (!Objects.equals(clean.getId(), studentResponse.getId())) {
+//                         cleanList.add(studentResponse);;
+//                     }
+//                 }
+//             }
+//
+//
+//         });
+//
+//
+//         //cleanList.add((StudentResponse) tempSet);
+//       });
+
+        return cleanList;
+    }
+
+    public static <T> Set<T> mergeSet(Set<T> a, Set<T> b) {
+
+        // Adding all elements of respective Sets
+        // using addAll() method
+        return new HashSet<T>() {
+            {
+                addAll(a);
+                addAll(b);
+            }
+        };
+    }
+
+
 }

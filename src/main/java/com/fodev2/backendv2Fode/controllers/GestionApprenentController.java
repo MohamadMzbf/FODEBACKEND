@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 //@CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -20,7 +21,7 @@ public class GestionApprenentController {
 
     @GetMapping(path = "/user")
     @ResponseStatus(HttpStatus.OK)
-    public List<StudentResponse[]> list(){
-        return gestionApprenantsService.getStudents();
+    public List<StudentResponse> list(){
+        return gestionApprenantsService.getUsers();
     }
 }
