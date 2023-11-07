@@ -22,6 +22,6 @@ public class GestionApprenentController {
     @GetMapping(path = "/user")
     @ResponseStatus(HttpStatus.OK)
     public List<StudentResponse> list(){
-        return gestionApprenantsService.getUsers();
+        return gestionApprenantsService.getStudents();
     }
 }

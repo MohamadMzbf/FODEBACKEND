@@ -3,6 +3,7 @@ package com.fodev2.backendv2Fode.services;
 import com.fodev2.backendv2Fode.MoodleConfig;
 import com.fodev2.backendv2Fode.dto.CoursResponse;
 import com.fodev2.backendv2Fode.dto.StudentResponse;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,13 +30,7 @@ public class GestionApprenantsService {
 
         for (CoursResponse coursResponse : coursResponses) {
 
-            if(     coursResponse.getId() == 1 ||
-                    coursResponse.getId() == 556 ||
-                    coursResponse.getId() == 557 ||
-                    coursResponse.getId() == 558 ||
-                    coursResponse.getId() == 562 ||
-                    coursResponse.getId() == 563 ||
-                    coursResponse.getId() == 578 ) continue;
+            if(coursResponse.getCategoryid() == 11 || coursResponse.getCategoryid() == 9) continue;
 
             System.out.println(coursResponse.getId());
 
@@ -66,67 +61,73 @@ public class GestionApprenantsService {
         String wsfunction = "core_enrol_get_enrolled_users";
         String requestTemplate = moodleConfig.serveurUrl + "?wstoken={token}&wsfunction={function}&moodlewsrestformat=json&courseid={courseid}";
 
-        List<Integer> ignores = new ArrayList<>();
+       // coursResponses = coursResponses.stream().filter(coursResponse -> coursResponse.getCategoryid() != 11).collect(Collectors.toList());
 
-        ignores.add(1);
-        ignores.add(556);
-        ignores.add(557);
-        ignores.add(558);
-        ignores.add(562);
-        ignores.add(563);
-        ignores.add(578);
-
-
-
-
-
-        ForkJoinPool forkJoinPool = new ForkJoinPool(50);
 
         try {
-            forkJoinPool.submit(() -> coursResponses.parallelStream().filter(coursResponse -> ignores.contains(coursResponse.getId())).forEach(
+             coursResponses.parallelStream().filter(coursResponse -> coursResponse.getCategoryid() != 11).forEach(
                     coursResponse -> {
-                        ResponseEntity<StudentResponse[]> studentsResponseEntity = restTemplate.getForEntity(
-                                requestTemplate,
-                                StudentResponse[].class,
-                                moodleConfig.wstoken,
-                                wsfunction,
-                                coursResponse.getId()
-                        );
-                        synchronized (studentResponses){
+                            //coursesID.add(coursResponse.getCategoryid());
+                            ResponseEntity<StudentResponse[]> studentsResponseEntity = restTemplate.getForEntity(
+                                    requestTemplate,
+                                    StudentResponse[].class,
+                                    moodleConfig.wstoken,
+                                    wsfunction,
+                                    coursResponse.getId()
+                            );
                             studentResponses.add(studentsResponseEntity.getBody());
 
-                        }
                     }
-            ) ).get();
+            );
 
         }catch (Exception e){
             e.printStackTrace();
 
         }
 
-
+        //return  coursesID;
         return cleaningList(studentResponses);
     }
 
-    public List<StudentResponse> cleaningList(List<StudentResponse[]> studentResponses){
+    public List<StudentResponse> cleaningList(List<StudentResponse[]> studentResponses) {
 
         final List<StudentResponse> cleanList = new ArrayList<>();
 
-        for(StudentResponse[] studentResponses1 : studentResponses){
-            Arrays.stream(studentResponses1).toList().forEach(studentResponse -> {
-                        System.out.println(studentResponse.getId());
+        studentResponses.forEach(studentResponses1 ->
+                Arrays.stream(studentResponses1).toList().forEach(studentResponse -> {
 
-                        if (cleanList.isEmpty()) {
+                    if (cleanList.isEmpty()) {
+                        cleanList.add(studentResponse);
+                    }else{
+                        if(cleanList.stream().noneMatch(p -> p.getId().equals(studentResponse.getId()))){
                             cleanList.add(studentResponse);
-                        }else{
-                            if(cleanList.stream().noneMatch(p -> p.getId().equals(studentResponse.getId()))){
-                                cleanList.add(studentResponse);
-                            }
                         }
+                    }
 
 
-                    });
-        }
+                })
+        );
+        System.out.println(cleanList.size());
+        return cleanList;
+
+
+
+//        for (StudentResponse[] studentResponses1 : studentResponses) {
+//
+//            for (StudentResponse studentResponse : studentResponses1) {
+//                if (cleanList.isEmpty()) {
+//                    cleanList.add(studentResponse);
+//                } else {
+//                    if (cleanList.stream().noneMatch(p -> p.getId().equals(studentResponse.getId()))) {
+//                        cleanList.add(studentResponse);
+//                    }
+//                }
+//
+//            }
+//        }
+
+    }
+
 
 //       studentResponses.forEach(studentResponses1 -> {
 //
@@ -149,20 +150,11 @@ public class GestionApprenantsService {
 //         //cleanList.add((StudentResponse) tempSet);
 //       });
 
-        return cleanList;
-    }
 
-    public static <T> Set<T> mergeSet(Set<T> a, Set<T> b) {
 
-        // Adding all elements of respective Sets
-        // using addAll() method
-        return new HashSet<T>() {
-            {
-                addAll(a);
-                addAll(b);
-            }
-        };
-    }
+
+
+
 
 
 }

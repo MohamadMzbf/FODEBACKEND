@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 
 @SpringBootApplication
-public class Backendv2FodeApplication extends SpringBootServletInitializer {
+public class Backendv2FodeApplication extends  SpringBootServletInitializer  {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Backendv2FodeApplication.class, args);
