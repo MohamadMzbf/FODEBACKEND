@@ -1,7 +1,9 @@
 package com.fodev2.backendv2Fode.services;
 
 import com.fodev2.backendv2Fode.MoodleConfig;
+import com.fodev2.backendv2Fode.dto.ApprenantStatistics;
 import com.fodev2.backendv2Fode.dto.CoursResponse;
+import com.fodev2.backendv2Fode.dto.CustomField;
 import com.fodev2.backendv2Fode.dto.StudentResponse;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +55,7 @@ public class GestionApprenantsService {
         return cleaningList(students);
     }
 
+    // cette methode permet de récupérer les apprenants deja netoyei au doublons de manière parallèle
     public List<StudentResponse> getStudents(){
 
         List<StudentResponse[]> studentResponses = new ArrayList<>();
@@ -89,6 +92,45 @@ public class GestionApprenantsService {
         return cleaningList(studentResponses);
     }
 
+    public Map<String, Integer> countStudentsByGender() {
+        List<StudentResponse> students = getStudents();
+
+        // Utilisez un Map pour stocker le compte des apprenants par sexe
+        Map<String, Integer> genderCount = new HashMap<>();
+        genderCount.put("Masculin", 0);
+        genderCount.put("Féminin", 0);
+
+        for (StudentResponse student : students) {
+            // Utilisez la méthode getGenderFromCustomFields pour obtenir le genre
+            String gender = getGenderFromCustomFields(student);
+
+            // Vérifiez le genre et mettez à jour le compteur correspondant
+            if ("masculin".equalsIgnoreCase(gender)) {
+                genderCount.put("Masculin", genderCount.get("Masculin") + 1);
+            } else if ("féminin".equalsIgnoreCase(gender)) {
+                genderCount.put("Féminin", genderCount.get("Féminin") + 1);
+            }
+        }
+
+        return genderCount;
+    }
+
+
+    // Méthode pour extraire le genre à partir du champ "customfields"
+    private String getGenderFromCustomFields(StudentResponse student) {
+
+        List<CustomField> customFieldList1 = student.getCustomFieldList();
+        for (CustomField customField : customFieldList1) {
+            if ("Genre".equalsIgnoreCase(customField.getName())) {
+                return customField.getValue();
+            }
+        }
+        return "Champs non renseignei";
+    }
+
+
+
+    //Cette methode permet de eliminer les doublons
     public List<StudentResponse> cleaningList(List<StudentResponse[]> studentResponses) {
 
         final List<StudentResponse> cleanList = new ArrayList<>();
@@ -98,63 +140,16 @@ public class GestionApprenantsService {
 
                     if (cleanList.isEmpty()) {
                         cleanList.add(studentResponse);
-                    }else{
-                        if(cleanList.stream().noneMatch(p -> p.getId().equals(studentResponse.getId()))){
+                    } else {
+                        if (cleanList.stream().noneMatch(p -> p.getId().equals(studentResponse.getId()))) {
                             cleanList.add(studentResponse);
                         }
                     }
 
-
                 })
         );
-        System.out.println(cleanList.size());
+
         return cleanList;
-
-
-
-//        for (StudentResponse[] studentResponses1 : studentResponses) {
-//
-//            for (StudentResponse studentResponse : studentResponses1) {
-//                if (cleanList.isEmpty()) {
-//                    cleanList.add(studentResponse);
-//                } else {
-//                    if (cleanList.stream().noneMatch(p -> p.getId().equals(studentResponse.getId()))) {
-//                        cleanList.add(studentResponse);
-//                    }
-//                }
-//
-//            }
-//        }
-
     }
-
-
-//       studentResponses.forEach(studentResponses1 -> {
-//
-//         Arrays.stream(studentResponses1).toList().forEach(studentResponse -> {
-//             System.out.println(studentResponse.getId());
-//             if (cleanList.isEmpty())  {
-//                 cleanList.add(studentResponse);
-//             }else {
-//                 for (StudentResponse clean : cleanList) {
-//                     if (!Objects.equals(clean.getId(), studentResponse.getId())) {
-//                         cleanList.add(studentResponse);;
-//                     }
-//                 }
-//             }
-//
-//
-//         });
-//
-//
-//         //cleanList.add((StudentResponse) tempSet);
-//       });
-
-
-
-
-
-
-
 
 }

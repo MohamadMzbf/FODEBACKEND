@@ -9,13 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
 //@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping(value = "/fodev2/api/apprenent")
 @RequiredArgsConstructor
-public class GestionApprenentController {
+public class GestionApprenantController {
 
     private GestionApprenantsService gestionApprenantsService = new GestionApprenantsService();
 
@@ -23,5 +24,10 @@ public class GestionApprenentController {
     @ResponseStatus(HttpStatus.OK)
     public List<StudentResponse> list(){
         return gestionApprenantsService.getStudents();
+    }
+
+    @GetMapping("/gender-count")
+    public Map<String, Integer> countStudentsByGender() {
+        return gestionApprenantsService.countStudentsByGender();
     }
 }
