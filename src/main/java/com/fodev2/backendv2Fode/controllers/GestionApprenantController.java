@@ -26,8 +26,8 @@ public class GestionApprenantController {
         return gestionApprenantsService.getStudents();
     }
 
-    @GetMapping("/gender-count")
-    public Map<String, Integer> countStudentsByGender() {
-        return gestionApprenantsService.countStudentsByGender();
-    }
+//    @GetMapping("/gender-count")
+//    public Map<String, Integer> countStudentsByGender() {
+//        return gestionApprenantsService.countStudentsByGender();
+//    }
 }

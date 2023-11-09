@@ -92,41 +92,41 @@ public class GestionApprenantsService {
         return cleaningList(studentResponses);
     }
 
-    public Map<String, Integer> countStudentsByGender() {
-        List<StudentResponse> students = getStudents();
-
-        // Utilisez un Map pour stocker le compte des apprenants par sexe
-        Map<String, Integer> genderCount = new HashMap<>();
-        genderCount.put("Masculin", 0);
-        genderCount.put("Féminin", 0);
-
-        for (StudentResponse student : students) {
-            // Utilisez la méthode getGenderFromCustomFields pour obtenir le genre
-            String gender = getGenderFromCustomFields(student);
-
-            // Vérifiez le genre et mettez à jour le compteur correspondant
-            if ("masculin".equalsIgnoreCase(gender)) {
-                genderCount.put("Masculin", genderCount.get("Masculin") + 1);
-            } else if ("féminin".equalsIgnoreCase(gender)) {
-                genderCount.put("Féminin", genderCount.get("Féminin") + 1);
-            }
-        }
-
-        return genderCount;
-    }
+//    public Map<String, Integer> countStudentsByGender() {
+//        List<StudentResponse> students = getStudents();
+//
+//        // Utilisez un Map pour stocker le compte des apprenants par sexe
+//        Map<String, Integer> genderCount = new HashMap<>();
+//        genderCount.put("Masculin", 0);
+//        genderCount.put("Féminin", 0);
+//
+//        for (StudentResponse student : students) {
+//            // Utilisez la méthode getGenderFromCustomFields pour obtenir le genre
+//            String gender = getGenderFromCustomFields(student);
+//
+//            // Vérifiez le genre et mettez à jour le compteur correspondant
+//            if ("masculin".equalsIgnoreCase(gender)) {
+//                genderCount.put("Masculin", genderCount.get("Masculin") + 1);
+//            } else if ("féminin".equalsIgnoreCase(gender)) {
+//                genderCount.put("Féminin", genderCount.get("Féminin") + 1);
+//            }
+//        }
+//
+//        return genderCount;
+//    }
 
 
     // Méthode pour extraire le genre à partir du champ "customfields"
-    private String getGenderFromCustomFields(StudentResponse student) {
-
-        List<CustomField> customFieldList1 = student.getCustomFieldList();
-        for (CustomField customField : customFieldList1) {
-            if ("Genre".equalsIgnoreCase(customField.getName())) {
-                return customField.getValue();
-            }
-        }
-        return "Champs non renseignei";
-    }
+//    private String getGenderFromCustomFields(StudentResponse student) {
+//
+//        List<CustomField> customFieldList1 = student.getCustomFieldList();
+//        for (CustomField customField : customFieldList1) {
+//            if ("Genre".equalsIgnoreCase(customField.getName())) {
+//                return customField.getValue();
+//            }
+//        }
+//        return "Champs non renseignei";
+//    }
 
 
 

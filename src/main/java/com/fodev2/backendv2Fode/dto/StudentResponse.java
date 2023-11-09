@@ -21,81 +21,81 @@ public class StudentResponse {
              private String profileimageurl   ;
 
              //==================AJOUTER====================
-             private List<Group> groups; // Champ ajouté
-    private List<Role> roles; // Champ ajouté
-
-    private List<CustomField> customFieldList;
-
-    public List<CustomField> getCustomFieldList() {
-        return customFieldList;
-    }
-
-    public void setCustomFieldList(List<CustomField> customFieldList) {
-        this.customFieldList = customFieldList;
-    }
-
-    //    private List<CustomField> customfields; // Champ ajouté
-    private List<EnrolledCourse> enrolledcourses; // Champ ajouté
-    private String genre; // Champ ajouté
-
-//    public class CustomField {
-//        private String type;
-//        private String value;
-//        private String name;
-//        private String shortname;
-//    }
-
-    public static class Role {
-        private Long roleid;
-        private String name;
-        private String shortname;
-        private int sortorder;
-    }
-
-    public static class EnrolledCourse {
-        private Long id;
-        private String fullname;
-        private String shortname;
-    }
-
-    public static class Group {
-        // Vous pouvez préciser le type approprié si nécessaire
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
-//    public List<CustomField> getCustomfields() {
-//        return customfields;
+//             private List<Group> groups; // Champ ajouté
+//   // private List<Role> roles; // Champ ajouté
+//
+//    private List<CustomField> customFieldList;
+//
+//    public List<CustomField> getCustomFieldList() {
+//        return customFieldList;
 //    }
 //
-//    public void setCustomfields(List<CustomField> customfields) {
-//        this.customfields = customfields;
+//    public void setCustomFieldList(List<CustomField> customFieldList) {
+//        this.customFieldList = customFieldList;
 //    }
-
-    public List<EnrolledCourse> getEnrolledcourses() {
-        return enrolledcourses;
-    }
-
-    public void setEnrolledcourses(List<EnrolledCourse> enrolledcourses) {
-        this.enrolledcourses = enrolledcourses;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    //================================================
-
+//
+//    //    private List<CustomField> customfields; // Champ ajouté
+//    private List<EnrolledCourse> enrolledcourses; // Champ ajouté
+//    private String genre; // Champ ajouté
+//
+////    public class CustomField {
+////        private String type;
+////        private String value;
+////        private String name;
+////        private String shortname;
+////    }
+//
+//    public static class Role {
+//        private Long roleid;
+//        private String name;
+//        private String shortname;
+//        private int sortorder;
+//    }
+//
+//    public static class EnrolledCourse {
+//        private Long id;
+//        private String fullname;
+//        private String shortname;
+//    }
+//
+//    public static class Group {
+//        // Vous pouvez préciser le type approprié si nécessaire
+//    }
+////
+////    public List<Role> getRoles() {
+////        return roles;
+////    }
+////
+////    public void setRoles(List<Role> roles) {
+////        this.roles = roles;
+////    }
+//
+////    public List<CustomField> getCustomfields() {
+////        return customfields;
+////    }
+////
+////    public void setCustomfields(List<CustomField> customfields) {
+////        this.customfields = customfields;
+////    }
+//
+//    public List<EnrolledCourse> getEnrolledcourses() {
+//        return enrolledcourses;
+//    }
+//
+//    public void setEnrolledcourses(List<EnrolledCourse> enrolledcourses) {
+//        this.enrolledcourses = enrolledcourses;
+//    }
+//
+////    public String getGenre() {
+////        return genre;
+////    }
+////
+////    public void setGenre(String genre) {
+////        this.genre = genre;
+////    }
+//
+//    //================================================
+//
 
     public Integer getId() {
         return id;
