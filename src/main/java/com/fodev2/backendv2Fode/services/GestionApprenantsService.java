@@ -4,8 +4,10 @@ import com.fodev2.backendv2Fode.MoodleConfig;
 import com.fodev2.backendv2Fode.dto.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.Normalizer;
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
@@ -104,13 +106,18 @@ public class GestionApprenantsService {
 
             if(student.getCity() != null){
                 String city = student.getCity().toUpperCase().trim();
+                String normalizedWord = Normalizer.normalize(city, Normalizer.Form.NFD);
+                city = normalizedWord.replaceAll("\\p{M}","");
+
+
                 if (apprenantZones.isEmpty()){
                     ApprenantZone apprenantZone = new ApprenantZone();
                     apprenantZone.setZone(city);
                     apprenantZone.setNombreEtudiant(1);
                     apprenantZones.add(apprenantZone);
                 }else{
-                    if(apprenantZones.stream().noneMatch(p -> p.getZone().equals(city))){
+                    String finalCity = city;
+                    if(apprenantZones.stream().noneMatch(p -> p.getZone().equals(finalCity))){
                         ApprenantZone apprenantZone = new ApprenantZone();
                         apprenantZone.setZone(city);
                         apprenantZone.setNombreEtudiant(1);
