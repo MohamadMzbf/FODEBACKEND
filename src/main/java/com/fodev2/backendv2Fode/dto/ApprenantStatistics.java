@@ -1,41 +1,37 @@
 package com.fodev2.backendv2Fode.dto;
 
+import lombok.Getter;
+
 import java.util.List;
 
+@Getter
 public class ApprenantStatistics {
-    private String city;
-    private String country;
-    private String profileimageurl;
-    private List<CustomField> customfields;
-    private List<Role> roles;
-    private List<EnrolledCourse> enrolledcourses;
 
-    // Getter and Setter methods for the fields
+    private  Integer totalApprenant = 0;
+    private Integer apprenantFeminin  = 0;
+    private Integer apprenantMasculin  = 0;
+    private  Integer genreNonDefini = 0;
 
-    public static class CustomField {
-        private String type;
-        private String value;
-        private String name;
-        private String shortname;
 
-        // Getter and Setter methods for the fields
+    private  List<ApprenantZone> apprenantZones;
+
+    public void setGenreNonDefini(Integer genreNonDefini) {
+        this.genreNonDefini = genreNonDefini;
     }
 
-    public static class Role {
-        private Long roleid;
-        private String name;
-        private String shortname;
-        private int sortorder;
-
-        // Getter and Setter methods for the fields
+    public void setApprenantZones(List<ApprenantZone> apprenantZones) {
+        this.apprenantZones = apprenantZones;
     }
 
-    public static class EnrolledCourse {
-        private Long id;
-        private String fullname;
-        private String shortname;
-
-        // Getter and Setter methods for the fields
+    public void setTotalApprenant(Integer totalApprenant) {
+        this.totalApprenant = totalApprenant;
     }
 
+    public void setApprenantFeminin(Integer apprenantFeminin) {
+        this.apprenantFeminin = apprenantFeminin;
+    }
+
+    public void setApprenantMasculin(Integer apprenantMasculin) {
+        this.apprenantMasculin = apprenantMasculin;
+    }
 }

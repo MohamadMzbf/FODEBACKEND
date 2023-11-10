@@ -1,5 +1,6 @@
 package com.fodev2.backendv2Fode.controllers;
 
+import com.fodev2.backendv2Fode.dto.ApprenantStatistics;
 import com.fodev2.backendv2Fode.dto.CertificatResponse;
 import com.fodev2.backendv2Fode.dto.EducationRequest;
 import com.fodev2.backendv2Fode.dto.StudentResponse;
@@ -26,8 +27,8 @@ public class GestionApprenantController {
         return gestionApprenantsService.getStudents();
     }
 
-//    @GetMapping("/gender-count")
-//    public Map<String, Integer> countStudentsByGender() {
-//        return gestionApprenantsService.countStudentsByGender();
-//    }
+    @GetMapping("/gender-count")
+    public ApprenantStatistics countStudentsByGender() {
+        return gestionApprenantsService.getApprenantStatistics();
+    }
 }

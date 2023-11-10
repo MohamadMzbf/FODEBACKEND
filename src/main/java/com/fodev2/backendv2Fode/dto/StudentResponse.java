@@ -3,99 +3,39 @@ package com.fodev2.backendv2Fode.dto;
 import java.util.List;
 
 public class StudentResponse {
- 
-      private Integer  id ;
-          private String    username   ;
-            private String  firstname   ;
-            private String  lastname  ;
-             private String fullname   ;
-             private String email ;
-            private String  department   ;
-            private Long  firstaccess ;
-             private Long lastaccess  ;
-            private Long  lastcourseaccess  ;
-            private String  description   ;
-            private Integer  descriptionformat ;
-            private String  country  ;
-            private String  profileimageurlsmall   ;
-             private String profileimageurl   ;
 
-             //==================AJOUTER====================
-//             private List<Group> groups; // Champ ajouté
-//   // private List<Role> roles; // Champ ajouté
-//
-//    private List<CustomField> customFieldList;
-//
-//    public List<CustomField> getCustomFieldList() {
-//        return customFieldList;
-//    }
-//
-//    public void setCustomFieldList(List<CustomField> customFieldList) {
-//        this.customFieldList = customFieldList;
-//    }
-//
-//    //    private List<CustomField> customfields; // Champ ajouté
-//    private List<EnrolledCourse> enrolledcourses; // Champ ajouté
-//    private String genre; // Champ ajouté
-//
-////    public class CustomField {
-////        private String type;
-////        private String value;
-////        private String name;
-////        private String shortname;
-////    }
-//
-//    public static class Role {
-//        private Long roleid;
-//        private String name;
-//        private String shortname;
-//        private int sortorder;
-//    }
-//
-//    public static class EnrolledCourse {
-//        private Long id;
-//        private String fullname;
-//        private String shortname;
-//    }
-//
-//    public static class Group {
-//        // Vous pouvez préciser le type approprié si nécessaire
-//    }
-////
-////    public List<Role> getRoles() {
-////        return roles;
-////    }
-////
-////    public void setRoles(List<Role> roles) {
-////        this.roles = roles;
-////    }
-//
-////    public List<CustomField> getCustomfields() {
-////        return customfields;
-////    }
-////
-////    public void setCustomfields(List<CustomField> customfields) {
-////        this.customfields = customfields;
-////    }
-//
-//    public List<EnrolledCourse> getEnrolledcourses() {
-//        return enrolledcourses;
-//    }
-//
-//    public void setEnrolledcourses(List<EnrolledCourse> enrolledcourses) {
-//        this.enrolledcourses = enrolledcourses;
-//    }
-//
-////    public String getGenre() {
-////        return genre;
-////    }
-////
-////    public void setGenre(String genre) {
-////        this.genre = genre;
-////    }
-//
-//    //================================================
-//
+    private Integer  id ;
+    private String    username   ;
+    private String  firstname   ;
+    private String  lastname  ;
+    private String fullname   ;
+    private String email ;
+    private String  department   ;
+    private Long  firstaccess ;
+    private Long lastaccess  ;
+    private Long  lastcourseaccess  ;
+    private String  description   ;
+    private Integer  descriptionformat ;
+    private String  country  ;
+    private String  profileimageurlsmall   ;
+    private String profileimageurl   ;
+
+    private List<CustomsField> customfields;
+
+    private List<EnrolledCourse>  enrolledcourses;
+
+    private List<Role>  roles;
+
+    private String city;
+
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public Integer getId() {
         return id;
@@ -216,4 +156,34 @@ public class StudentResponse {
     public void setProfileimageurl(String profileimageurl) {
         this.profileimageurl = profileimageurl;
     }
+
+    public List<CustomsField> getCustomfields() {
+        return customfields;
+    }
+
+    public void setCustomfields(List<CustomsField> customfields) {
+        this.customfields = customfields;
+    }
+
+    public List<EnrolledCourse> getEnrolledcourses() {
+        return enrolledcourses;
+    }
+
+    public void setEnrolledcourses(List<EnrolledCourse> enrolledcourses) {
+        this.enrolledcourses = enrolledcourses;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 }
+
+
+class Group {
+    // Vous pouvez préciser le type approprié si nécessaire
+}
+

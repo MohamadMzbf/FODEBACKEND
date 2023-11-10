@@ -1,10 +1,22 @@
 package com.fodev2.backendv2Fode.dto;
 
-public class CustomField {
+public class CustomsField {
+
     private String type;
+
     private String value;
+
     private String name;
+
     private String shortname;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getValue() {
         return value;
@@ -20,5 +32,13 @@ public class CustomField {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getShortname() {
+        return shortname;
+    }
+
+    public void setShortname(String shortname) {
+        this.shortname = shortname;
     }
 }

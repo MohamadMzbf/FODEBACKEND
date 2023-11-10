@@ -1,10 +1,7 @@
 package com.fodev2.backendv2Fode.services;
 
 import com.fodev2.backendv2Fode.MoodleConfig;
-import com.fodev2.backendv2Fode.dto.ApprenantStatistics;
-import com.fodev2.backendv2Fode.dto.CoursResponse;
-import com.fodev2.backendv2Fode.dto.CustomField;
-import com.fodev2.backendv2Fode.dto.StudentResponse;
+import com.fodev2.backendv2Fode.dto.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -92,41 +89,82 @@ public class GestionApprenantsService {
         return cleaningList(studentResponses);
     }
 
-//    public Map<String, Integer> countStudentsByGender() {
-//        List<StudentResponse> students = getStudents();
-//
-//        // Utilisez un Map pour stocker le compte des apprenants par sexe
-//        Map<String, Integer> genderCount = new HashMap<>();
-//        genderCount.put("Masculin", 0);
-//        genderCount.put("Féminin", 0);
-//
-//        for (StudentResponse student : students) {
-//            // Utilisez la méthode getGenderFromCustomFields pour obtenir le genre
-//            String gender = getGenderFromCustomFields(student);
-//
-//            // Vérifiez le genre et mettez à jour le compteur correspondant
-//            if ("masculin".equalsIgnoreCase(gender)) {
-//                genderCount.put("Masculin", genderCount.get("Masculin") + 1);
-//            } else if ("féminin".equalsIgnoreCase(gender)) {
-//                genderCount.put("Féminin", genderCount.get("Féminin") + 1);
-//            }
-//        }
-//
-//        return genderCount;
-//    }
+    public ApprenantStatistics getApprenantStatistics() {
+
+        List<StudentResponse> students = getStudents();
+
+        ApprenantStatistics apprenantStatistics = new ApprenantStatistics();
+
+        List<ApprenantZone> apprenantZones = new ArrayList<>();
+
+        for (StudentResponse student : students) {
+            // Utilisez la méthode getGenderFromCustomFields pour obtenir le genre
+            String gender = getGenderFromCustomFields(student);
+            apprenantStatistics.setTotalApprenant(apprenantStatistics.getTotalApprenant()+1);
+
+            if(student.getCity() != null){
+                String city = student.getCity().toUpperCase().trim();
+                if (apprenantZones.isEmpty()){
+                    ApprenantZone apprenantZone = new ApprenantZone();
+                    apprenantZone.setZone(city);
+                    apprenantZone.setNombreEtudiant(1);
+                    apprenantZones.add(apprenantZone);
+                }else{
+                    if(apprenantZones.stream().noneMatch(p -> p.getZone().equals(city))){
+                        ApprenantZone apprenantZone = new ApprenantZone();
+                        apprenantZone.setZone(city);
+                        apprenantZone.setNombreEtudiant(1);
+                        apprenantZones.add(apprenantZone);
+                    }else{
+                        ApprenantZone apprenantZone = new ApprenantZone();
+                        int i ;
+                        int nombreTotal=0;
+                        for(i =0 ; i < apprenantZones.size() ; i++){
+                            if(apprenantZones.get(i).getZone().equals(city)){
+                                nombreTotal = apprenantZones.get(i).getNombreEtudiant();
+                                break;
+                            }
+                        }
+                        apprenantZones.get(i).setNombreEtudiant(nombreTotal+1);
+                    }
+                }
+            }
+
+            // Vérifiez le genre et mettez à jour le compteur correspondant
+            if ("masculin".equalsIgnoreCase(gender)) {
+                apprenantStatistics.setApprenantMasculin(apprenantStatistics.getApprenantMasculin()+1);
+            } else if ("feminin".equalsIgnoreCase(gender)) {
+
+                apprenantStatistics.setApprenantFeminin(apprenantStatistics.getApprenantFeminin()+1);
+            }else{
+
+                apprenantStatistics.setGenreNonDefini(apprenantStatistics.getGenreNonDefini()+1);
+            }
+        }
+
+        apprenantStatistics.setApprenantZones(apprenantZones);
+
+        return apprenantStatistics;
+
+      //  return genderCount;
+    }
 
 
     // Méthode pour extraire le genre à partir du champ "customfields"
-//    private String getGenderFromCustomFields(StudentResponse student) {
-//
-//        List<CustomField> customFieldList1 = student.getCustomFieldList();
-//        for (CustomField customField : customFieldList1) {
-//            if ("Genre".equalsIgnoreCase(customField.getName())) {
-//                return customField.getValue();
-//            }
-//        }
-//        return "Champs non renseignei";
-//    }
+    private String getGenderFromCustomFields(StudentResponse student) {
+
+        List<CustomsField> customFieldList1 = student.getCustomfields();
+        if (customFieldList1 != null){
+            for (CustomsField customsField : customFieldList1) {
+                if ("Genre".equalsIgnoreCase(customsField.getName())) {
+                    return customsField.getValue();
+                }
+            }
+        }else{
+            return null;
+        }
+        return null;
+    }
 
 
 
@@ -137,6 +175,8 @@ public class GestionApprenantsService {
 
         studentResponses.forEach(studentResponses1 ->
                 Arrays.stream(studentResponses1).toList().forEach(studentResponse -> {
+
+                    System.out.println(studentResponse.getId());
 
                     if (cleanList.isEmpty()) {
                         cleanList.add(studentResponse);
