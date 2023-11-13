@@ -3,7 +3,9 @@ package com.fodev2.backendv2Fode.services;
 import com.fodev2.backendv2Fode.MoodleConfig;
 import com.fodev2.backendv2Fode.dto.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,12 +13,14 @@ import java.text.Normalizer;
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
-
+@Service
 public class GestionApprenantsService {
-
     private final GestionCoursService gestionCoursService = new  GestionCoursService();
 
     final MoodleConfig moodleConfig = new MoodleConfig();
+
+    private  final RestTemplate restTemplate = new RestTemplate() ;
+
 
 
 
@@ -56,7 +60,6 @@ public class GestionApprenantsService {
 
     // cette methode permet de récupérer les apprenants deja netoyei au doublons de manière parallèle
     public List<StudentResponse> getStudents(){
-
         List<StudentResponse[]> studentResponses = new ArrayList<>();
         List<CoursResponse> coursResponses = gestionCoursService.getAllCourses();
         RestTemplate restTemplate = new RestTemplate();
@@ -64,7 +67,6 @@ public class GestionApprenantsService {
         String requestTemplate = moodleConfig.serveurUrl + "?wstoken={token}&wsfunction={function}&moodlewsrestformat=json&courseid={courseid}";
 
        // coursResponses = coursResponses.stream().filter(coursResponse -> coursResponse.getCategoryid() != 11).collect(Collectors.toList());
-
 
         try {
              coursResponses.parallelStream().filter(coursResponse -> coursResponse.getCategoryid() != 11).forEach(
@@ -91,7 +93,7 @@ public class GestionApprenantsService {
         return cleaningList(studentResponses);
     }
 
-    public ApprenantStatistics getApprenantStatistics() {
+    public ApprenantStatistics getApprenantStatistics(){
 
         List<StudentResponse> students = getStudents();
 
@@ -137,18 +139,16 @@ public class GestionApprenantsService {
                 }
             }
 
+
             // Vérifiez le genre et mettez à jour le compteur correspondant
             if ("masculin".equalsIgnoreCase(gender)) {
                 apprenantStatistics.setApprenantMasculin(apprenantStatistics.getApprenantMasculin()+1);
             } else if ("feminin".equalsIgnoreCase(gender)) {
-
                 apprenantStatistics.setApprenantFeminin(apprenantStatistics.getApprenantFeminin()+1);
             }else{
-
                 apprenantStatistics.setGenreNonDefini(apprenantStatistics.getGenreNonDefini()+1);
             }
         }
-
         apprenantStatistics.setApprenantZones(apprenantZones);
 
         return apprenantStatistics;
@@ -177,9 +177,7 @@ public class GestionApprenantsService {
 
     //Cette methode permet de eliminer les doublons
     public List<StudentResponse> cleaningList(List<StudentResponse[]> studentResponses) {
-
         final List<StudentResponse> cleanList = new ArrayList<>();
-
         studentResponses.forEach(studentResponses1 ->
                 Arrays.stream(studentResponses1).toList().forEach(studentResponse -> {
 
@@ -198,5 +196,74 @@ public class GestionApprenantsService {
 
         return cleanList;
     }
+
+    //methode pour recuperer IDs des cohorts
+    public Integer[] getCohortIds() {
+        String apiUrl = String.format("%s?wstoken=%s&wsfunction=core_cohort_get_cohorts&moodlewsrestformat=%s",
+                moodleConfig.serveurUrl, moodleConfig.wstoken, moodleConfig.moodlewsrestformat);
+
+        CohortResponse[] cohortResponses = restTemplate.getForEntity(
+                apiUrl,
+                CohortResponse[].class
+                ).getBody();
+
+        if (cohortResponses != null) {
+            return Arrays.stream(cohortResponses)
+                    .map(CohortResponse::getId)
+                    .toArray(Integer[]::new);
+        }
+        return new Integer[0];
+    }
+
+
+    //methode pour recuperer liste apprenant par cohort
+//    private List<StudentResponse> getStudentByIDCohort(int cohortId) {
+//        String apiUrl = String.format("%s?wstoken=%s&wsfunction=core_cohort_get_cohort_members&moodlewsrestformat=%s&cohortid=%d",
+//                moodleConfig.serveurUrl, moodleConfig.wstoken, moodleConfig.moodlewsrestformat, cohortId);
+//        ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiUrl, String.class);
+//        String responseBody = responseEntity.getBody();
+//        System.out.println("Response JSON: " + responseBody);
+//
+//        StudentResponse[] studentResponses = restTemplate.getForObject(apiUrl, StudentResponse[].class);
+//
+//        if (studentResponses != null) {
+//            return Arrays.asList(studentResponses);
+//        }
+//
+//        return Collections.emptyList();
+//    }
+
+    //======
+    public int getStudentCountByCohort(int cohortId) {
+        String apiUrl = String.format("%s?wstoken=%s&wsfunction=core_cohort_get_cohort_members&moodlewsrestformat=%s&cohortid=%d",
+                moodleConfig.serveurUrl, moodleConfig.wstoken, moodleConfig.moodlewsrestformat, cohortId);
+        StudentResponse[] studentResponses = restTemplate.getForEntity(apiUrl, StudentResponse[].class).getBody();
+
+        if (studentResponses != null) {
+            return studentResponses.length;
+        }
+        return 0;
+    }
+
+
+//    private StudentResponse getStudentByIDCohort(int cohortId) {
+//        String apiUrl = String.format("%s?wstoken=%s&wsfunction=core_cohort_get_cohort_members&moodlewsrestformat=%s&cohortid=%d",
+//                moodleConfig.serveurUrl, moodleConfig.wstoken, moodleConfig.moodlewsrestformat, cohortId);
+//        return restTemplate.getForObject(apiUrl, StudentResponse.class);
+//    }
+
+    public Map<Integer, Integer> listStudentsByCohort() {
+        Integer[] cohortIds = getCohortIds();
+        Map<Integer, Integer> studentCountsByCohort = new HashMap<>();
+
+        for (Integer cohortId : cohortIds) {
+            int studentCount = getStudentCountByCohort(cohortId);
+            studentCountsByCohort.put(cohortId, studentCount);
+        }
+        return studentCountsByCohort;
+    }
+
+
+
 
 }

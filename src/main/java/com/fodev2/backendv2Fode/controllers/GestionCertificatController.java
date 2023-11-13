@@ -25,10 +25,8 @@ public class GestionCertificatController {
     @GetMapping(path="/lists")
     @ResponseStatus(HttpStatus.OK)
     public List<CertificatResponse> listCertificat(){
-
         return gestioncertificatService.getListCertificat();
 
     }
-
 
 }
