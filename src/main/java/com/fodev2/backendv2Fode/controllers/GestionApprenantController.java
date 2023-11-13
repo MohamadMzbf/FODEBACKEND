@@ -1,16 +1,16 @@
 package com.fodev2.backendv2Fode.controllers;
 
-import com.fodev2.backendv2Fode.dto.ApprenantStatistics;
-import com.fodev2.backendv2Fode.dto.CertificatResponse;
-import com.fodev2.backendv2Fode.dto.EducationRequest;
-import com.fodev2.backendv2Fode.dto.StudentResponse;
+import com.fodev2.backendv2Fode.dto.*;
+import com.fodev2.backendv2Fode.services.ApprenantServiceBis;
 import com.fodev2.backendv2Fode.services.GestionApprenantsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 @RestController
@@ -21,6 +21,8 @@ public class GestionApprenantController {
 
     private GestionApprenantsService gestionApprenantsService = new GestionApprenantsService();
 
+    private ApprenantServiceBis apprenantServiceBis = new ApprenantServiceBis();
+
     @GetMapping(path = "/user")
     @ResponseStatus(HttpStatus.OK)
     public List<StudentResponse> list(){
@@ -30,5 +32,18 @@ public class GestionApprenantController {
     @GetMapping("/gender-count")
     public ApprenantStatistics countStudentsByGender() {
         return gestionApprenantsService.getApprenantStatistics();
+    }
+
+    @GetMapping("/membres")
+    @ResponseStatus(HttpStatus.OK)
+    public CohortMembers getCohortMember(@Param("cohortId") Integer cohortId){
+
+        return  apprenantServiceBis.getCohortsMembers(cohortId);
+
+    }
+
+    @GetMapping("/students")
+    public List<StudentResponse> getStudentsByCohort(@RequestParam("cohortId") Integer cohortId) throws Exception {
+        return apprenantServiceBis.getStudentsByCohort(cohortId);
     }
 }
