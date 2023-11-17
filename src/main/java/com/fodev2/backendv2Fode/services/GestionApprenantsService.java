@@ -199,7 +199,6 @@ public class GestionApprenantsService {
                 apiUrl,
                 CohortResponse[].class
                 );
-
         return List.of(cohortResponses.getBody());
     }
 
@@ -217,7 +216,7 @@ public class GestionApprenantsService {
                 wsfunction,
                 cohortId
                 );
-
+        
 
         return List.of(cohortMembersResponseEntity.getBody()).get(0).getUserids().size();
     }

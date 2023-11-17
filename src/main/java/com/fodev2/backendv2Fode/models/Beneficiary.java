@@ -36,17 +36,13 @@ public class Beneficiary {
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
-
-
     @ManyToOne
     @JoinColumn(name = "gender_id")
     private Gender gender;
-
 //    @OneToOne
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
-
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
@@ -170,4 +166,5 @@ public class Beneficiary {
 //    public void setProfile(Profile profile) {
 //        this.profile = profile;
 //    }
+
 }

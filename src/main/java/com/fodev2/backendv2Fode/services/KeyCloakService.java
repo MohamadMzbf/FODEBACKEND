@@ -36,7 +36,6 @@ public class KeyCloakService {
         UsersResource usersResource = getInstance();
         List<UserRepresentation> user = usersResource.search(userName, true);
         return user;
-
     }
 
 //    public void updateUser(String userId, UserDTO userDTO){
@@ -58,7 +57,6 @@ public class KeyCloakService {
         usersResource.get(userId)
                 .remove();
     }
-
 
     public void sendVerificationLink(String userId){
         UsersResource usersResource = getInstance();
@@ -85,7 +83,6 @@ public class KeyCloakService {
 
 
     public UsersResource getInstance(){
-
         return KeycloakConfig.getInstance().realm(KeycloakConfig.realm).users();
     }
 

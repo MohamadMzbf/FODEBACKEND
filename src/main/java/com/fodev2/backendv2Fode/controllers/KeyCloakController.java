@@ -20,7 +20,6 @@ public class KeyCloakController {
     KeyCloakService service;
     @PostMapping(path = "/createUser")
     @ResponseStatus(HttpStatus.CREATED)
-
     public ResponseEntity<ContentDto> addUser(@RequestBody UserDTO userDTO){
         service.addUser(userDTO);
         return ResponseEntity.ok(new ContentDto("User Added Successfully."));
