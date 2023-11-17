@@ -2,7 +2,6 @@ package com.fodev2.backendv2Fode;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.OAuth2Constants;
-import org.keycloak.adapters.KeycloakConfigResolver;
 //import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;

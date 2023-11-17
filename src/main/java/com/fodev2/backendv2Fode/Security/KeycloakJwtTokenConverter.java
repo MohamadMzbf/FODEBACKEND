@@ -1,4 +1,4 @@
-package com.fodev2.backendv2Fode;
+package com.fodev2.backendv2Fode.Security;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;

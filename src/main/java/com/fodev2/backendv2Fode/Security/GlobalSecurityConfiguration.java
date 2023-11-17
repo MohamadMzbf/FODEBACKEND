@@ -1,4 +1,4 @@
-package com.fodev2.backendv2Fode;
+package com.fodev2.backendv2Fode.Security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +31,7 @@ public class GlobalSecurityConfiguration {
 
         http.authorizeHttpRequests(authorize ->
                 authorize
-                        .requestMatchers(new AntPathRequestMatcher("/api/test/*"))
+                        .requestMatchers(new AntPathRequestMatcher("/fodev2/api/*"))
                         .hasAuthority("Admin-FODE")
                         .anyRequest()
                         .authenticated()

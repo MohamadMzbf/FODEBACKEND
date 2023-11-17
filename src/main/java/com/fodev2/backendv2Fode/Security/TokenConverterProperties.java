@@ -1,4 +1,4 @@
-package com.fodev2.backendv2Fode;
+package com.fodev2.backendv2Fode.Security;
 
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
